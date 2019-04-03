@@ -21,7 +21,7 @@ Set of tools for automating various actions in Umbraco CMS.
 - .NET Framework 4.5.1
 
 ### Installation
-The compiled solution can be packed into a NuGet package using Base.nuspec. Base.nuspec contains only neccessary dependent dlls.
+The compiled solution can be packed into a NuGet package using Base.nuspec.
 
 App.config must contain correct configuration including connection string and membership provider(s) settings.
 

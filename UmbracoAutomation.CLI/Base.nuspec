@@ -11,24 +11,9 @@
     <releaseNotes>release notes</releaseNotes>
   </metadata>
   <files>
-    <file src="bin\Release\AutoMapper.dll" target="\" />
-    <file src="bin\Release\ImageProcessor.dll" target="\" />
-    <file src="bin\Release\interfaces.dll" target="\" />
-    <file src="bin\Release\Log4Net.Async.dll" target="\" />
-    <file src="bin\Release\log4net.dll" target="\" />
-    <file src="bin\Release\ManyConsole.dll" target="\" />
-    <file src="bin\Release\Microsoft.AspNet.Identity.Core.dll" target="\" />
-    <file src="bin\Release\Microsoft.AspNet.Identity.Owin.dll" target="\" />
-    <file src="bin\Release\Microsoft.Owin.dll" target="\" />
-    <file src="bin\Release\Microsoft.Owin.Security.Cookies.dll" target="\" />
-    <file src="bin\Release\MiniProfiler.dll" target="\" />
-    <file src="bin\Release\Mono.Options.dll" target="\" />
-    <file src="bin\Release\Newtonsoft.Json.dll" target="\" />
-    <file src="bin\Release\Semver.dll" target="\" />
-    <file src="bin\Release\Umbraco.Core.dll" target="\" />
-    <file src="bin\Release\umbraco.dll" target="\" />
-    <file src="bin\Release\UmbracoAutomation.CLI.exe" target="\" />
-    <file src="bin\Release\UmbracoAutomation.CLI.exe.config" target="\" />
-    <file src="bin\Release\UmbracoAutomation.CLI.exe.Release.config" target="\" />
+    <file src="*.dll" target="\" />
+    <file src="UmbracoAutomation.CLI.exe" target="\" />
+    <file src="UmbracoAutomation.CLI.exe.config" target="\" />
+    <file src="UmbracoAutomation.CLI.exe.Release.config" target="\" />
   </files>
 </package>
