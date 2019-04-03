@@ -16,7 +16,7 @@ Set of tools for automating various actions in Umbraco CMS.
 ## UmbracoAutomation.CLI
 
 ### Compatibility
-- Umbraco CMS 7.13.2
+- Umbraco CMS 7.13.2 - 7.14.0
 - Windows OS only
 - .NET Framework 4.5.1
 
