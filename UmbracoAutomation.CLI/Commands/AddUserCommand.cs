@@ -4,7 +4,6 @@ using System.Linq;
 using Umbraco.Core;
 using Umbraco.Core.Models.Membership;
 using Umbraco.Core.Persistence;
-using Umbraco.Web.Security.Providers;
 
 namespace UmbracoAutomation.CLI.Commands
 {
@@ -40,21 +39,21 @@ namespace UmbracoAutomation.CLI.Commands
                 
                 bootManager.Complete(ctx =>
                 {
-                    var mbp = new UsersMembershipProvider();
+                    var db = ApplicationContext.Current.DatabaseContext.Database;
                     var existingUser = ctx.Services.UserService.GetByUsername(Name);
                     if (existingUser != null)
                     {
-                        ctx.Services.UserService.Delete(existingUser, true);
+                        var deleteSql = new Sql("DELETE FROM umbracoUser2UserGroup WHERE userId =" + existingUser.Id + ";" +
+                            "DELETE FROM [umbracoUserLogin] WHERE userId =" + existingUser.Id + ";" +
+                            "DELETE FROM [umbracoUser] where id =" + existingUser.Id + ";");
+                        var res = db.Execute(deleteSql);
                     }
 
                     var newUser = ctx.Services.UserService.CreateUserWithIdentity(Name, Email);
-                    var userGroup = ctx.Services.UserService.GetUserGroupsByAlias(Group).FirstOrDefault() as IReadOnlyUserGroup;
-                    newUser.RawPasswordValue = mbp.HashPasswordForStorage(Password);
                     ctx.Services.UserService.SavePassword(newUser, Password);
-                        
-                    if (userGroup != null)
+
+                    if (ctx.Services.UserService.GetUserGroupsByAlias(Group).FirstOrDefault() is IReadOnlyUserGroup userGroup)
                     {
-                        var db = ApplicationContext.Current.DatabaseContext.Database;
                         var insert = new Sql("INSERT INTO umbracoUser2UserGroup VALUES (" + newUser.Id + ", " + userGroup.Id + ")");
                         var res = db.Execute(insert);
                     }
