@@ -11,6 +11,11 @@ namespace UmbracoAutomation.CLI.Commands
     {
         private const int Success = 0;
         private const int Failure = 2;
+        private const string PatternTemplate = "(\\S+[_][a-zA-Z0-9]+)(\\.\\S*?{0}\\/?$)";
+        private string Pattern 
+        {
+            get => String.Format(PatternTemplate, Regex.Escape(Suffix));
+        }
         public string Suffix { get; set; }
 
         public RevertHostnamesCommand()
@@ -34,11 +39,11 @@ namespace UmbracoAutomation.CLI.Commands
                 bootManager.Complete(ctx =>
                 {
                     ctx.Services.DomainService.GetAll(false)
-                    .Where(d => Regex.IsMatch(d.DomainName, "_([a-zA-Z])+." + Regex.Escape(Suffix) + "$"))
+                    .Where(d => Regex.IsMatch(d.DomainName, Pattern))
                     .ToList()
                     .ForEach(i =>
                     {
-                        i.DomainName = i.DomainName.TrimEnd("." + Suffix).Replace("_", ".");
+                        i.DomainName = Regex.Replace(i.DomainName, Pattern, m => m.Groups[1].Value).Replace("_", ".");
                         ctx.Services.DomainService.Save(i);
                     });
                 });
