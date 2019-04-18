@@ -233,6 +233,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\AddUserCommand.cs" />
+    <Compile Include="Commands\FetchMediaCommand.cs" />
     <Compile Include="Commands\RevertHostnamesCommand.cs" />
     <Compile Include="Commands\SetHostnameByRuleCommand.cs" />
     <Compile Include="Commands\SetPropertyByIdCommand.cs" />

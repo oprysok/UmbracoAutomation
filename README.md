@@ -12,6 +12,7 @@ Set of tools for automating various actions in Umbraco CMS.
     - [SetHostnameByRule](#SetHostnameByRule)
     - [UpdateHostnames](#UpdateHostnames)
     - [RevertHostnames](#RevertHostnames)
+    - [FetchMedia](#FetchMedia)
 
 ## UmbracoAutomation.CLI
 
@@ -33,6 +34,7 @@ AddUser                 Adds a new Umbraco user. If target user already exist th
 SetHostnameByRule       Updates/sets hostname for a node by its name using special rules format.
 UpdateHostnames         Update hostname for each SiteRoot node.
 RevertHostnames         Reverts hostname updates made by UpdateHostnames command.
+FetchMedia              Downloads missing media files from source URL.
 
 help <name>             For help with one of the above commands
 ```
@@ -148,3 +150,21 @@ Example:
 UmbracoAutomation.CLI.exe RevertHostnames -s=app.dev.int
 With the given example above it transforms 'example_com.app.dev.int' into 'example.com'.
 ```
+
+#### FetchMedia
+
+Downloads missing media files from source URL.
+
+```
+Usage: 
+UmbracoAutomation.CLI.exe FetchMedia <options>
+
+Options
+  -o, --output=VALUE         Output directory. Umbraco app root directory.
+  -s, --source=VALUE         Source Umbraco URL.
+
+Example:
+FetchMedia -s="http://example.com" -o="D:\UmbracoContent\Content"
+```
+
+Notes: tested only with Umbraco.Texbox properties.
