@@ -40,23 +40,38 @@ namespace UmbracoAutomation.CLI.Commands
                 bootManager.Complete(ctx =>
                 {
                     var db = ApplicationContext.Current.DatabaseContext.Database;
+                    var userId = 0;
                     var existingUser = ctx.Services.UserService.GetByUsername(Name);
+                    
                     if (existingUser != null)
                     {
-                        var deleteSql = new Sql("DELETE FROM umbracoUser2UserGroup WHERE userId =" + existingUser.Id + ";" +
-                            "DELETE FROM [umbracoUserLogin] WHERE userId =" + existingUser.Id + ";" +
-                            "DELETE FROM [umbracoUser] where id =" + existingUser.Id + ";");
-                        var res = db.Execute(deleteSql);
+                        userId = existingUser.Id;
+                        ctx.Services.UserService.SavePassword(existingUser, Password);
+                    } else
+                    {
+                        var newUser = ctx.Services.UserService.CreateUserWithIdentity(Name, Email);
+                        userId = newUser.Id;
+                        ctx.Services.UserService.SavePassword(newUser, Password);
                     }
-
-                    var newUser = ctx.Services.UserService.CreateUserWithIdentity(Name, Email);
-                    ctx.Services.UserService.SavePassword(newUser, Password);
 
                     if (ctx.Services.UserService.GetUserGroupsByAlias(Group).FirstOrDefault() is IReadOnlyUserGroup userGroup)
                     {
-                        var insert = new Sql("INSERT INTO umbracoUser2UserGroup VALUES (" + newUser.Id + ", " + userGroup.Id + ")");
-                        var res = db.Execute(insert);
+                        var deleteGroup = new Sql("DELETE FROM umbracoUser2UserGroup WHERE userId = " + userId + " AND userGroupId = " + userGroup.Id + ";");
+                        db.Execute(deleteGroup);
+                        var insertGroup = new Sql("INSERT INTO umbracoUser2UserGroup VALUES (" + userId + ", " + userGroup.Id + ")");
+                        db.Execute(insertGroup);
                     }
+
+                    // Update cmsDocument
+                    var updateCmsDocument = new Sql("UPDATE cmsDocument SET documentUser = " + userId + " where documentUser NOT IN (SELECT id FROM umbracoUser);");
+                    db.Execute(updateCmsDocument);
+                    // Update history on Info tab
+                    var updateLogs = new Sql("UPDATE [umbracoLog] SET userId = " + userId + " WHERE userId NOT IN (SELECT id FROM umbracoUser);");
+                    db.Execute(updateLogs);
+                    // Update umbracoNode
+                    var updateNodes = new Sql("UPDATE umbracoNode SET nodeUser = " + userId + " WHERE nodeUser NOT IN (SELECT id FROM umbracoUser)");
+                    db.Execute(updateNodes);
+
                 });
                 return Success;
             }

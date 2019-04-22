@@ -77,7 +77,7 @@ Updates 'myProperty' for each published node of a 'siteRoot' doctype.
 
 
 #### AddUser
-Adds a new Umbraco backoffice user (not member). If target user already exists then the password is updated.
+Adds a new Umbraco backoffice user (not member).
 
 ```
 Usage: 
@@ -94,7 +94,8 @@ UmbracoAutomation.CLI.exe AddUser -n=test -e=test@example.com -p=Password1
 UmbracoAutomation.CLI.exe AddUser -n=test -e=test@example.com -p=Password1 -g=admin
 ```
 Notes: 
-- Email is not updated when target user already exists.
+- If user already exists password is being updated.
+- References to a non existing users in all documents are updated with a new user just in case.
 
 #### SetHostnameByRule
  Updates/sets hostname for a node by its name using special rules format.

@@ -25,7 +25,7 @@ namespace UmbracoAutomation.CLI.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("umbHomePage")]
+        [global::System.Configuration.DefaultSettingValueAttribute("siteRoot")]
         public string SiteRootDocType {
             get {
                 return ((string)(this["SiteRootDocType"]));
