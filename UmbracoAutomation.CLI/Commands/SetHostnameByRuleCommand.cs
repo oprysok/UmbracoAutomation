@@ -9,6 +9,7 @@ namespace UmbracoAutomation.CLI.Commands
     {
         private const int Success = 0;
         private const int Failure = 2;
+        private string SiteRootDoctypeAlias = Properties.Settings.Default.SiteRootDocType;
         public string Rules { get; set; }
 
         public SetHostnameByRuleCommand()
@@ -35,7 +36,7 @@ namespace UmbracoAutomation.CLI.Commands
                 bootManager.Complete(ctx =>
                 {
                     var rls = Rules.Split(';').ToList();
-                    var contentType = ctx.Services.ContentTypeService.GetContentType("umbHomePage");
+                    var contentType = ctx.Services.ContentTypeService.GetContentType(SiteRootDoctypeAlias);
                     var siteNodes = ctx.Services.ContentService.GetContentOfContentType(contentType.Id);
 
                     foreach (var r in rls)
