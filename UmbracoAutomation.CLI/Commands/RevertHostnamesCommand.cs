@@ -43,8 +43,15 @@ namespace UmbracoAutomation.CLI.Commands
                     .ToList()
                     .ForEach(i =>
                     {
-                        i.DomainName = Regex.Replace(i.DomainName, Pattern, m => m.Groups[1].Value).Replace("_", ".");
-                        ctx.Services.DomainService.Save(i);
+                        var newName = Regex.Replace(i.DomainName, Pattern, m => m.Groups[1].Value).Replace("_", ".");
+                        if (ctx.Services.DomainService.Exists(newName))
+                        {
+                            Console.WriteLine($"Cannot update {i.DomainName} as {newName} already exist. Removing {i.DomainName}");
+                            ctx.Services.DomainService.Delete(i);
+                        } else {
+                            i.DomainName = newName;
+                            ctx.Services.DomainService.Save(i);
+                        }
                     });
                 });
 

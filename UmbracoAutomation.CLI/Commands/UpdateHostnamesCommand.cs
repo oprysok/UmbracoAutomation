@@ -49,7 +49,14 @@ namespace UmbracoAutomation.CLI.Commands
                         {
                             ctx.Services.DomainService.GetAssignedDomains(m.Id, false)
                             .Where(d => !Regex.IsMatch(d.DomainName, Exclude)).ToList().ForEach(i => {
-                                i.DomainName = i.DomainName.TrimEnd("/").Replace(".", "_") + "." + Suffix;
+                                var newName = i.DomainName.TrimEnd("/").Replace(".", "_") + "." + Suffix;
+                                if (ctx.Services.DomainService.Exists(newName))
+                                {
+                                    Console.WriteLine($"Target domain {newName} already exists. Deleting.");
+                                    var existing = ctx.Services.DomainService.GetByName(newName);
+                                    ctx.Services.DomainService.Delete(existing);
+                                }
+                                i.DomainName = newName;
                                 ctx.Services.DomainService.Save(i);
                             });
                         });
