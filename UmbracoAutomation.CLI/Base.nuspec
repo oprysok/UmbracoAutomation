@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
-    <id>Umbraco.Automation.CLI</id>
-    <title>Umbraco.Automation.CLI</title>
+    <id>UmbracoAutomation.CLI</id>
+    <title>UmbracoAutomation.CLI</title>
     <version>0.1.0</version>
     <authors>Mykhailo Oprysok</authors>
     <owners></owners>
@@ -12,7 +12,7 @@
   </metadata>
   <files>
     <file src="*.dll" target="\" />
-    <file src="UmbracoAutomation.CLI.exe" target="\" />
+	<file src="*.exe" target="\" />
     <file src="UmbracoAutomation.CLI.exe.config" target="\" />
     <file src="UmbracoAutomation.CLI.exe.Release.config" target="\" />
   </files>

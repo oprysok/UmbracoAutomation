@@ -4,6 +4,8 @@ using Umbraco.Core;
 using Umbraco.Core.Persistence;
 using System.IO;
 using System.Net;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace UmbracoAutomation.CLI.Commands
 {
@@ -49,28 +51,33 @@ namespace UmbracoAutomation.CLI.Commands
                     ServicePointManager.DefaultConnectionLimit = 9999;
                     ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
 
-                    using (var client = new WebClient())
+                    var errors = new List<string>();
+
+                    Parallel.ForEach(res, new ParallelOptions { MaxDegreeOfParallelism = 8 }, i =>
                     {
-                        foreach (string i in res)
+                        if (!string.IsNullOrEmpty(i))
                         {
-                            var filePath = (OutputDir + i).Replace("/", "\\");
-                            if (!File.Exists(filePath))
+                            using (var client = new WebClient())
                             {
-                                Directory.CreateDirectory(Path.GetDirectoryName(filePath));
-                                var url = (sourceUrl + i);
-                                try
+                                var filePath = (OutputDir + i).Replace("/", "\\");
+                                if (!File.Exists(filePath))
                                 {
-                                    client.DownloadFile(url, filePath);
-                                    Console.Out.WriteLine("Downloaded: " + url);
-                                }
-                                catch (Exception ex)
-                                {
-                                    Console.Out.WriteLine("Failed: " + url);
-                                    Console.Out.WriteLine(ex.Message);
+                                    Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+                                    var url = (sourceUrl + i);
+                                    try
+                                    {
+                                        client.DownloadFile(url, filePath);
+                                        Console.Out.WriteLine("Downloaded: " + url);
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        errors.Add($"Failed - {url} : {ex.Message}");
+                                    }
                                 }
                             }
                         }
-                    }
+                    });
+                    errors.ForEach(Console.Out.WriteLine);
                     Console.Out.WriteLine("Done");
                 });
                 return Success;

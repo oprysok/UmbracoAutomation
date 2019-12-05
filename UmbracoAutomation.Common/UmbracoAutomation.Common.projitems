@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>35d59068-668a-4b37-821c-b06a394dba6b</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>UmbracoAutomation.WebApi</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)RequestBody\AddUserParams.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DomainAction.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DomainDirective.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MySitestHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RequestBody\UpdateContentParams.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RequestBody\UpgradeParams.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SiteRootBy.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UmbracoDocumentBy.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CommonTasks.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DomainSet.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RequestBody\ExportHostnamesParams.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RequestBody\FetchMediaParams.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PropertyValueRule.cs" />
+  </ItemGroup>
+</Project>

@@ -1,5 +1,7 @@
 ﻿using ManyConsole;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Umbraco.Core;
 
 namespace UmbracoAutomation.CLI.Commands
@@ -8,7 +10,7 @@ namespace UmbracoAutomation.CLI.Commands
     {
         private const int Success = 0;
         private const int Failure = 2;
-        public int Id { get; set; }
+        public List<int> Id { get; set; }
         public string Name { get; set; }
         public string Value { get; set; }
 
@@ -21,7 +23,9 @@ namespace UmbracoAutomation.CLI.Commands
             HasLongDescription("This can be used to update site settings by a node id.");
 
             // Required options/flags, append '=' to obtain the required value.
-            HasRequiredOption("i|id=", "The id of the node to be updated.", p => Id = int.Parse(p));
+            HasRequiredOption("i|id=", "The id of the node to be updated.", p => {
+                Id = p.Split(',').Select(s => int.Parse(s.Trim())).ToList();
+            });
 
             // Required options/flags, append '=' to obtain the required value.
             HasRequiredOption("n|name=", "The name of the property.", p => Name = p);
@@ -36,13 +40,21 @@ namespace UmbracoAutomation.CLI.Commands
                 bootManager.Initialize();
                 bootManager.Complete(ctx =>
                 {
-                    var conceptRoot = ctx.Services.ContentService.GetById(Id);
-                    conceptRoot.SetValue(Name, Value);
-                    var result = ctx.Services.ContentService.SaveAndPublishWithStatus(conceptRoot);
-                    if (!result.Success)
+                    Id.ForEach(i =>
                     {
-                        throw new Exception("Failed to update property.");
-                    }
+                        var node = ctx.Services.ContentService.GetById(i);
+                        node.SetValue(Name, Value);
+                        var result = ctx.Services.ContentService.SaveAndPublishWithStatus(node);
+                        if (!result.Success)
+                        {
+                            var message = result.Result.StatusType.ToString();
+                            if (message == "FailedContentInvalid")
+                            {
+                                message += ": " + result.Result.InvalidProperties.FirstOrDefault().Alias;
+                            }
+                            throw new Exception("Failed to update property. " + message);
+                        }
+                    });
                 });
 
                 Console.Out.WriteLine("Updated");

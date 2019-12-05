@@ -1,6 +1,7 @@
 ﻿using ManyConsole;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 namespace UmbracoAutomation.CLI
 {
 	public class Program
@@ -13,7 +14,10 @@ namespace UmbracoAutomation.CLI
 
         public static IEnumerable<ConsoleCommand> GetCommands()
         {
-            return ConsoleCommandDispatcher.FindCommandsInSameAssemblyAs(typeof(Program));
+            return ConsoleCommandDispatcher.FindCommandsInSameAssemblyAs(typeof(Program)).ToList().Where(c =>
+            {
+                return c.GetType().Namespace.StartsWith("UmbracoAutomation.CLI.");
+            });
         }
     }
 }

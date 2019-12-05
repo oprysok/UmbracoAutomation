@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>UmbracoAutomation.WebApiV7</id>
+    <title>UmbracoAutomation.WebApiV7</title>
+    <version>0.1.0</version>
+    <authors>Mykhailo Oprysok</authors>
+    <owners></owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>WebApi controller for automating Umbraco configuration and content updates.</description>
+    <releaseNotes>release notes</releaseNotes>
+  </metadata>
+  <files>
+    <file src="..\..\..\UmbracoAutomation.WebApiV7\*.cs" target="\" />
+    <file src="..\..\..\UmbracoAutomation.Common\*.cs" target="\" />
+    <file src="..\..\..\UmbracoAutomation.Common\RequestBody\*.cs" target="\" />
+  </files>
+</package>
